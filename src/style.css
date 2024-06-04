@@ -1,0 +1,75 @@
+@import url("../src/vendor/normalize.css");
+@import url("../src/vendor/fonts.css");
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background-color: #f4f4f4;
+  cursor: pointer;
+}
+
+button {
+  display: none;
+}
+
+td:hover > button {
+  display: inline;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+button.add-item::before {
+  content: '+';
+}
+
+button.add-group::before {
+  content: '#';
+}
+
+
+/* body {
+    font-family: PT Sans, sans-serif;
+    max-width: 1440px;
+    max-height: 1074px;
+    
+  }
+  
+  #app {
+    padding: 20px;
+    overflow: auto;
+    max-height: 100%;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table, th, td {
+    border: 1px solid black;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .editable-cell {
+    cursor: pointer;
+  }
+  
+  input {
+    width: 100%;
+  }
+  .title{
+
+  } */

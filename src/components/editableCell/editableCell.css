@@ -1,0 +1,14 @@
+/* .editable-cell {
+    background-color: #fff;
+}
+
+.editable-cell:focus {
+    background-color: #e6f7ff;
+    outline: none;
+} */
+
+.editable-cell input {
+    width: 100%;
+    border: none;
+  }
+  
