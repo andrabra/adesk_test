@@ -1,4 +1,3 @@
-// budgetTable.js
 import EditableCell from '../editableCell/editableCell';
 import './budgetTable.css';
 
@@ -8,7 +7,6 @@ class BudgetTable {
     this.sortConfig = { key: 'name', direction: 'asc' };
 
     this.table = document.createElement('table');
-    // this.render();
   }
 
   handleCellSave(group, item, month, newValue) {
@@ -101,10 +99,12 @@ class BudgetTable {
     cellTotal.textContent = item.total;
     row.appendChild(cellTotal);
 
-    Object.keys(item.values).forEach((month) => {
-      const cell = new EditableCell(item.values[month], (newValue) => this.handleCellSave(groupKey, item, month, newValue));
-      row.appendChild(cell.getElement());
-    });
+    if (item.values) {
+      Object.keys(item.values).forEach((month) => {
+        const cell = new EditableCell(item.values[month], (newValue) => this.handleCellSave(groupKey, item, month, newValue));
+        row.appendChild(cell.getElement());
+      });
+    }
 
     this.table.appendChild(row);
 
@@ -134,72 +134,45 @@ class BudgetTable {
     this.table.innerHTML = '';
 
     const thead = document.createElement('thead');
-    const headerRow = document.createElement('tr');
-    ['Статья', 'Итог', 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-      .forEach((header, index) => {
-        const th = document.createElement('th');
+
+    // Первая строка заголовка
+    const headerRow1 = document.createElement('tr');
+    const headerRow1Titles = ['БЮДЖЕТ', 'Итог', 'Январь 2024', 'Февраль 2024', 'Март 2024', 'Апрель 2024', 'Май 2024', 'Июнь 2024', 'Июль 2024', 'Август 2024', 'Сентябрь 2024', 'Октябрь 2024', 'Ноябрь 2024', 'Декабрь 2024'];
+
+    headerRow1Titles.forEach((header, index) => {
+      const th = document.createElement('th');
+      th.textContent = header;
+      headerRow1.appendChild(th);
+    });
+    thead.appendChild(headerRow1);
+
+    // Вторая строка заголовка
+    const headerRow2 = document.createElement('tr');
+    const headerRow2Titles = ['', 'План', ...headerRow1Titles.slice(2).map(() => 'План')];
+
+    headerRow2Titles.forEach((header, index) => {
+      const th = document.createElement('th');
+      if (index === 0) {
+        th.innerHTML = `${header} <button>⇅</button>`; // Кнопка сортировки
+        th.addEventListener('click', () => this.handleSort('name'));
+      } else {
         th.textContent = header;
-        if (index === 0) {
-          th.addEventListener('click', () => this.handleSort('name'));
-        } else if (index === 1) {
+        if (index === 1) {
           th.addEventListener('click', () => this.handleSort('total'));
         }
-        headerRow.appendChild(th);
-      });
-    thead.appendChild(headerRow);
+      }
+      headerRow2.appendChild(th);
+    });
+    thead.appendChild(headerRow2);
 
-    // Adding "План" row
-    const planRow = document.createElement('tr');
-    const planNameCell = document.createElement('td');
-    planNameCell.textContent = 'План';
-    planRow.appendChild(planNameCell);
-
-    const planTotalCell = document.createElement('td');
-    planTotalCell.textContent = ''; // Empty for "Итог"
-    planRow.appendChild(planTotalCell);
-
-    ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-      .forEach((month) => {
-        const planCell = new EditableCell(0, () => {}); // Plan values, no specific handling needed
-        planRow.appendChild(planCell.getElement());
-      });
-
-    this.table.appendChild(planRow);
     this.table.appendChild(thead);
 
-    const incomeGroup = document.createElement('tr');
-    const incomeGroupCell = document.createElement('td');
-    incomeGroupCell.colSpan = 14;
-    incomeGroupCell.innerHTML = `
-      Бюджет доходов
-      <button class="add-income-item">+</button>
-      <button class="add-income-group">#</button>
-    `;
-    incomeGroup.appendChild(incomeGroupCell);
-    this.table.appendChild(incomeGroup);
+    const tbody = document.createElement('tbody');
+    [this.data.income, this.data.expenses].forEach((group) => {
+      this.renderRow(group, group.type);
+    });
 
-    // Adding event listeners after elements are added to DOM
-    incomeGroupCell.querySelector('.add-income-item').addEventListener('click', () => this.handleAddItem('income', false));
-    incomeGroupCell.querySelector('.add-income-group').addEventListener('click', () => this.handleAddItem('income', true));
-
-    this.data.income.children.forEach((item) => this.renderRow(item, 'income'));
-
-    const expensesGroup = document.createElement('tr');
-    const expensesGroupCell = document.createElement('td');
-    expensesGroupCell.colSpan = 14;
-    expensesGroupCell.innerHTML = `
-      Бюджет расходов
-      <button class="add-expenses-item">+</button>
-      <button class="add-expenses-group">#</button>
-    `;
-    expensesGroup.appendChild(expensesGroupCell);
-    this.table.appendChild(expensesGroup);
-
-    // Adding event listeners after elements are added to DOM
-    expensesGroupCell.querySelector('.add-expenses-item').addEventListener('click', () => this.handleAddItem('expenses', false));
-    expensesGroupCell.querySelector('.add-expenses-group').addEventListener('click', () => this.handleAddItem('expenses', true));
-
-    this.data.expenses.children.forEach((item) => this.renderRow(item, 'expenses'));
+    this.table.appendChild(tbody);
   }
 
   getElement() {
