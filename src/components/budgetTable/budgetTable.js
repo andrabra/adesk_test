@@ -28,10 +28,11 @@ class BudgetTable {
       });
       return groupTotal;
     };
-
+  
     this.data.income.total = calculateGroupTotal(this.data.income);
     this.data.expenses.total = calculateGroupTotal(this.data.expenses);
   }
+  
 
   toggleCollapse(groupKey, item) {
     item.isCollapsed = !item.isCollapsed;
@@ -84,7 +85,7 @@ class BudgetTable {
 
   renderRow(item, groupKey, parentGroup = null) {
     const row = document.createElement('tr');
-
+  
     const cellName = document.createElement('td');
     if (item.type === 'group') {
       const button = document.createElement('button');
@@ -92,26 +93,47 @@ class BudgetTable {
       button.addEventListener('click', () => this.toggleCollapse(groupKey, item));
       cellName.appendChild(button);
     }
-    cellName.appendChild(document.createTextNode(item.name));
+  
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = item.name;
+    nameSpan.addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = item.name;
+      input.addEventListener('blur', () => {
+        item.name = input.value;
+        this.render();
+      });
+      input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          item.name = input.value;
+          this.render();
+        }
+      });
+      cellName.innerHTML = '';
+      cellName.appendChild(input);
+      input.focus();
+    });
+    cellName.appendChild(nameSpan);
     row.appendChild(cellName);
-
+  
     const cellTotal = document.createElement('td');
     cellTotal.textContent = item.total;
     row.appendChild(cellTotal);
-
+  
     if (item.values) {
       Object.keys(item.values).forEach((month) => {
         const cell = new EditableCell(item.values[month], (newValue) => this.handleCellSave(groupKey, item, month, newValue));
         row.appendChild(cell.getElement());
       });
     }
-
+  
     this.table.appendChild(row);
-
+  
     if (item.children && !item.isCollapsed) {
       item.children.forEach((child) => this.renderRow(child, groupKey, item));
     }
-
+  
     // Adding buttons for adding new items/groups to the current group
     if (item.type === 'group') {
       const buttonRow = document.createElement('tr');
@@ -123,33 +145,35 @@ class BudgetTable {
       `;
       buttonRow.appendChild(buttonCell);
       this.table.appendChild(buttonRow);
-
+  
       buttonCell.querySelector('.add-item').addEventListener('click', () => this.handleAddItem(groupKey, false, item));
       buttonCell.querySelector('.add-group').addEventListener('click', () => this.handleAddItem(groupKey, true, item));
     }
   }
+  
+  
 
   render() {
     console.log('Rendering table');
     this.table.innerHTML = '';
-
+  
     const thead = document.createElement('thead');
-
+  
     // Первая строка заголовка
     const headerRow1 = document.createElement('tr');
     const headerRow1Titles = ['БЮДЖЕТ', 'Итог', 'Январь 2024', 'Февраль 2024', 'Март 2024', 'Апрель 2024', 'Май 2024', 'Июнь 2024', 'Июль 2024', 'Август 2024', 'Сентябрь 2024', 'Октябрь 2024', 'Ноябрь 2024', 'Декабрь 2024'];
-
+  
     headerRow1Titles.forEach((header, index) => {
       const th = document.createElement('th');
       th.textContent = header;
       headerRow1.appendChild(th);
     });
     thead.appendChild(headerRow1);
-
+  
     // Вторая строка заголовка
     const headerRow2 = document.createElement('tr');
     const headerRow2Titles = ['', 'План', ...headerRow1Titles.slice(2).map(() => 'План')];
-
+  
     headerRow2Titles.forEach((header, index) => {
       const th = document.createElement('th');
       if (index === 0) {
@@ -164,16 +188,17 @@ class BudgetTable {
       headerRow2.appendChild(th);
     });
     thead.appendChild(headerRow2);
-
+  
     this.table.appendChild(thead);
-
+  
     const tbody = document.createElement('tbody');
     [this.data.income, this.data.expenses].forEach((group) => {
       this.renderRow(group, group.type);
     });
-
+  
     this.table.appendChild(tbody);
   }
+  
 
   getElement() {
     return this.table;
