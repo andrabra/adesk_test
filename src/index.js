@@ -1,3 +1,4 @@
+// index.js
 import BudgetTable from './components/budgetTable/budgetTable';
 import budgetData from './services/budgetService';
 

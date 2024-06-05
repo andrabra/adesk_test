@@ -1,3 +1,4 @@
+// budgetTable.js
 import EditableCell from '../editableCell/editableCell';
 import './budgetTable.css';
 

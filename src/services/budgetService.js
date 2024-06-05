@@ -1,3 +1,4 @@
+//budgetService.js
 const budgetData = {
   income: {
     name: "Бюджет доходов",
@@ -32,27 +33,27 @@ export default budgetData;
 //   -по названию — строки сортируются в алфавитном порядке
   
 //   Архитектура проекта, которую я уже сделал выглядит вот так:
-//   /budget-app
-//   │
-//   ├── /dist
-//   │   ├── index.html
-//   │   └── main.js
-//   │
-//   ├── /src
-//   │   ├── /components
-//   │   │   ├── /budgetTable
-//   │   │   │   ├── budgetTable.js
-//   │   │   │   └── budgetTable.css
-//   │   │   └── /editableCell
-//   │   │       ├── editableCell.js
-//   │   │       └── editableCell.css
-//   │   ├── /services
-//   │   │   └── budgetService.js
-//   │   ├── index.html
-//   │   ├── index.js
-//   │   └── style.css
-//   │
-//   ├── webpack.config.js
-//   ├── package.json
-//   └── README.md
+  // /budget-app
+  // │
+  // ├── /dist
+  // │   ├── index.html
+  // │   └── main.js
+  // │
+  // ├── /src
+  // │   ├── /components
+  // │   │   ├── /budgetTable
+  // │   │   │   ├── budgetTable.js
+  // │   │   │   └── budgetTable.css
+  // │   │   └── /editableCell
+  // │   │       ├── editableCell.js
+  // │   │       └── editableCell.css
+  // │   ├── /services
+  // │   │   └── budgetService.js
+  // │   ├── index.html
+  // │   ├── index.js
+  // │   └── style.css
+  // │
+  // ├── webpack.config.js
+  // ├── package.json
+  // └── README.md
 
