@@ -216,93 +216,6 @@ class BudgetTable {
     return monthlySums;
   }
 
-  render() {
-    console.log("Rendering table");
-    this.table.innerHTML = "";
-
-    const thead = document.createElement("thead");
-
-    // Первая строка заголовка
-    const headerRow1 = document.createElement("tr");
-    headerRow1.classList.add("header-row1");
-    const headerRow1Titles = [
-      "",
-      "Итог",
-      "Январь 2024",
-      "Февраль 2024",
-      "Март 2024",
-      "Апрель 2024",
-      "Май 2024",
-      "Июнь 2024",
-      "Июль 2024",
-      "Август 2024",
-      "Сентябрь 2024",
-      "Октябрь 2024",
-      "Ноябрь 2024",
-      "Декабрь 2024",
-    ];
-
-    headerRow1Titles.forEach((header, index) => {
-      const th = document.createElement("th");
-      th.textContent = header;
-      headerRow1.appendChild(th);
-    });
-    thead.appendChild(headerRow1);
-
-    // Вторая строка заголовка
-    const headerRow2 = document.createElement("tr");
-    headerRow2.classList.add("header-row2");
-    const headerRow2Titles = [
-      "БЮДЖЕТ",
-      "План",
-      ...headerRow1Titles.slice(2).map(() => "План"),
-    ];
-
-    headerRow2Titles.forEach((header, index) => {
-      const th = document.createElement("th");
-      if (index === 0) {
-        th.innerHTML = `${header} <button>⇅</button>`; // Кнопка сортировки
-        th.addEventListener("click", () => this.handleSort("name"));
-      } else {
-        th.textContent = header;
-        if (index === 1) {
-          th.addEventListener("click", () => this.handleSort("total"));
-        }
-      }
-      headerRow2.appendChild(th);
-    });
-    thead.appendChild(headerRow2);
-
-    this.table.appendChild(thead);
-
-    const tbody = document.createElement("tbody");
-    [this.data.income, this.data.expenses].forEach((group) => {
-      group.values = this.aggregateMonthlyValues(group);
-      this.renderRow(group, group.type);
-    });
-
-    // Добавляем строку "Сальдо"
-    const saldoRow = document.createElement("tr");
-    const saldoCell = document.createElement("td");
-    saldoCell.textContent = "Сальдо";
-    saldoRow.appendChild(saldoCell);
-
-    // Вычисляем сальдо по всем столбцам
-    for (let i = 2; i < headerRow1Titles.length; i++) {
-      let incomeValue =
-        parseFloat(this.data.income.values[headerRow1Titles[i]]) || 0;
-      let expensesValue =
-        parseFloat(this.data.expenses.values[headerRow1Titles[i]]) || 0;
-      let saldo = incomeValue - expensesValue;
-      const saldoValueCell = document.createElement("td");
-      saldoValueCell.textContent = `${saldo.toFixed(2)} руб`;
-      saldoRow.appendChild(saldoValueCell);
-    }
-
-    tbody.appendChild(saldoRow);
-
-    this.table.appendChild(tbody);
-  }
 
   renderRow(item, groupKey, parentGroup = null) {
     const row = document.createElement("tr");
@@ -380,6 +293,7 @@ class BudgetTable {
     if (item.values) {
       Object.keys(item.values).forEach((month) => {
         const cell = document.createElement("td");
+        cell.classList.add("editable-cell");
         if (item.type === "item") {
           const editableCell = new EditableCell(
             item.values[month],
@@ -404,6 +318,97 @@ class BudgetTable {
       item.children.forEach((child) => this.renderRow(child, groupKey, item));
     }
   }
+
+  render() {
+    console.log("Rendering table");
+    this.table.innerHTML = "";
+
+    const thead = document.createElement("thead");
+
+    // Первая строка заголовка
+    const headerRow1 = document.createElement("tr");
+    headerRow1.classList.add("header-row1");
+    const headerRow1Titles = [
+      "",
+      "Итог",
+      "Январь 2024",
+      "Февраль 2024",
+      "Март 2024",
+      "Апрель 2024",
+      "Май 2024",
+      "Июнь 2024",
+      "Июль 2024",
+      "Август 2024",
+      "Сентябрь 2024",
+      "Октябрь 2024",
+      "Ноябрь 2024",
+      "Декабрь 2024",
+    ];
+
+    headerRow1Titles.forEach((header, index) => {
+      const th = document.createElement("th");
+      th.textContent = header;
+      headerRow1.appendChild(th);
+    });
+    thead.appendChild(headerRow1);
+
+    // Вторая строка заголовка
+    const headerRow2 = document.createElement("tr");
+    headerRow2.classList.add("header-row2");
+    const headerRow2Titles = [
+      "БЮДЖЕТ",
+      "План",
+      ...headerRow1Titles.slice(2).map(() => "План"),
+    ];
+
+    headerRow2Titles.forEach((header, index) => {
+      const th = document.createElement("th");
+      if (index === 0) {  
+        th.innerHTML = `${header} <button>⇅</button>`; // Кнопка сортировки
+        th.classList.add("budget-header");
+        th.addEventListener("click", () => this.handleSort("name"));
+      } else {
+        th.textContent = header;
+        if (index === 1) {
+          th.addEventListener("click", () => this.handleSort("total"));
+        }
+      }
+      headerRow2.appendChild(th);
+    });
+    thead.appendChild(headerRow2);
+
+    this.table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    [this.data.income, this.data.expenses].forEach((group) => {
+      group.values = this.aggregateMonthlyValues(group);
+      this.renderRow(group, group.type);
+    });
+
+    // // Добавляем строку "Сальдо"
+    // const saldoRow = document.createElement("tr");
+    // const saldoCell = document.createElement("td");
+    // saldoCell.textContent = "Сальдо";
+    // saldoRow.appendChild(saldoCell);
+
+    // // Вычисляем сальдо по всем столбцам
+    // for (let i = 2; i < headerRow1Titles.length; i++) {
+    //   let incomeValue =
+    //     parseFloat(this.data.income.values[headerRow1Titles[i]]) || 0;
+    //   let expensesValue =
+    //     parseFloat(this.data.expenses.values[headerRow1Titles[i]]) || 0;
+    //   let saldo = incomeValue - expensesValue;
+    //   const saldoValueCell = document.createElement("td");
+    //   saldoValueCell.textContent = `${saldo.toFixed(2)} руб`;
+    //   saldoRow.appendChild(saldoValueCell);
+    // }
+
+    // tbody.appendChild(saldoRow);
+
+    this.table.appendChild(tbody);
+  }
+
+  
 
   getElement() {
     return this.table;

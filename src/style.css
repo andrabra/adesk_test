@@ -1,22 +1,30 @@
 /* style.css */
 @import url("../src/vendor/normalize.css");
 @import url("../src/vendor/fonts.css");
-@import url("../src/components/editableCell/editableCell.css"); 
+@import url("../src/components/editableCell/editableCell.css");
 @import url("../src/components/budgetTable/budgetTable.css");
 
 body {
-  font-family: PT Sans, sans-serif;
-  max-width: 1440px;
-  max-height: 1074px;
-  /* background: rgb(244, 244, 244); */
+  background: rgb(244, 244, 244);
+  margin: 0 auto;
 }
 
 .main {
+  font-family: PT Sans, sans-serif;
+  max-width: 1440px;
+  max-height: 1074px;
   margin: 20px;
-  
 }
 
-
+.main__title {
+  color: rgb(51, 51, 51);
+  font-family: PT Sans;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 35px;
+  letter-spacing: 0%;
+  text-align: left;
+}
 
 th,
 td {
