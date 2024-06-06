@@ -2,6 +2,12 @@
 @import url("../src/vendor/normalize.css");
 @import url("../src/vendor/fonts.css");
 
+body {
+  font-family: PT Sans, sans-serif;
+  max-width: 1440px;
+  max-height: 1074px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -36,6 +42,11 @@ button.add-group::before {
   content: '#';
 }
 
+#app {
+  padding: 20px;
+  overflow: auto;
+  max-height: 100%;
+}
 
 /* body {
     font-family: PT Sans, sans-serif;

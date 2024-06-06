@@ -1,10 +1,11 @@
 // index.js
-import BudgetTable from './components/budgetTable/budgetTable';
-import budgetData from './services/budgetService';
+import BudgetTable from "./components/budgetTable/budgetTable";
+import budgetData from "./services/budgetService";
+import "./style.css";
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM fully loaded and parsed');
-  const app = document.getElementById('app');
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM fully loaded and parsed");
+  const app = document.getElementById("app");
   if (!app) {
     console.error('No element with id "app" found.');
     return;
