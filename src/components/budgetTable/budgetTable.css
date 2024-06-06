@@ -1,55 +1,14 @@
 /* budgetTable.css */
-/* .budget-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+.header-row1{
+  background-color: rgb(255, 255, 255);
+}
+.header-row2{
+  background-color: rgb(247, 247, 247);
+}
+.expenses-group {
+  background-color: rgb(247, 247, 247); /* Красный цвет фона для строки "Бюджет расходов" */
 }
 
-.budget-table th, .budget-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-
-.budget-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
-
-.budget-table .editable-cell {
-    cursor: pointer;
-}
-
-.budget-table .editable-cell:focus {
-    background-color: #e6f7ff;
-    outline: none;
-} */
-
-table {
-  margin: 20px 0;
-}
-
-/* Добавьте в файл budgetTable.css */
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th,
-td {
-  border: 1px solid black;
-  padding: 8px;
-  text-align: left;
-}
-
-.fixed-column {
-  position: sticky;
-  left: 0;
-  background: #fff;
-  z-index: 1;
-}
-
-th.fixed-column,
-td.fixed-column {
-  box-shadow: 2px 0 5px -2px rgba(0, 0, 0, 0.1);
+.income-group {
+  background-color: rgb(247, 247, 247); /* Зеленый цвет фона для строки "Бюджет доходов" */
 }

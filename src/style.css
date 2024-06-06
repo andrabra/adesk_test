@@ -1,87 +1,59 @@
 /* style.css */
 @import url("../src/vendor/normalize.css");
 @import url("../src/vendor/fonts.css");
+@import url("../src/components/editableCell/editableCell.css"); 
+@import url("../src/components/budgetTable/budgetTable.css");
 
 body {
   font-family: PT Sans, sans-serif;
   max-width: 1440px;
   max-height: 1074px;
+  /* background: rgb(244, 244, 244); */
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.main {
+  margin: 20px;
+  
 }
 
-th, td {
+
+
+th,
+td {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-th {
+/* th {
   background-color: #f4f4f4;
   cursor: pointer;
-}
+} */
 
 button {
-  display: none;
+  /* display: none; */
 }
 
 td:hover > button {
-  display: inline;
+  /* display: inline;
   background: none;
-  border: none;
+  border: none; */
   cursor: pointer;
 }
 
 button.add-item::before {
-  content: '+';
+  content: "+";
 }
 
 button.add-group::before {
-  content: '#';
+  content: "#";
 }
 
 #app {
-  padding: 20px;
   overflow: auto;
   max-height: 100%;
+  /* max-width: ; */
 }
-
-/* body {
-    font-family: PT Sans, sans-serif;
-    max-width: 1440px;
-    max-height: 1074px;
-    
-  }
-  
-  #app {
-    padding: 20px;
-    overflow: auto;
-    max-height: 100%;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  table, th, td {
-    border: 1px solid black;
-  }
-  
-  th, td {
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .editable-cell {
-    cursor: pointer;
-  }
-  
-  input {
-    width: 100%;
-  }
-  .title{
-
-  } */
+.table {
+  border-collapse: collapse;
+  /* background-color: rgba(255, 0, 0, 0.1); */
+}
