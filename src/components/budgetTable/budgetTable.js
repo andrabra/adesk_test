@@ -217,6 +217,38 @@ class BudgetTable {
   }
 
 
+  calculateSaldo() {
+    const saldo = {
+      name: "Сальдо",
+      values: {},
+      total: this.data.income.total - this.data.expenses.total
+    };
+  
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
+  
+    months.forEach((month) => {
+      const incomeValue = this.data.income.values[month] || 0;
+      const expensesValue = this.data.expenses.values[month] || 0;
+      saldo.values[month] = incomeValue - expensesValue;
+    });
+  
+    return saldo;
+  }
+  
+
   renderRow(item, groupKey, parentGroup = null) {
     const row = document.createElement("tr");
     const cellName = document.createElement("td");
@@ -226,6 +258,29 @@ class BudgetTable {
     } else if (item.name === "Бюджет доходов") {
       row.classList.add("income-group");
     }
+
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = item.name;
+    nameSpan.addEventListener("click", () => {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = item.name;
+      input.addEventListener("blur", () => {
+        item.name = input.value;
+        this.render();
+      });
+      input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          item.name = input.value;
+          this.render();
+        }
+      });
+      cellName.innerHTML = "";
+      cellName.appendChild(input);
+      input.focus();
+    });
+    cellName.appendChild(nameSpan);
+    row.appendChild(cellName);
 
     const isRootGroup =
       item.name === "Бюджет расходов" || item.name === "Бюджет доходов";
@@ -255,28 +310,7 @@ class BudgetTable {
       cellName.appendChild(addGroupButton);
     }
 
-    const nameSpan = document.createElement("span");
-    nameSpan.textContent = item.name;
-    nameSpan.addEventListener("click", () => {
-      const input = document.createElement("input");
-      input.type = "text";
-      input.value = item.name;
-      input.addEventListener("blur", () => {
-        item.name = input.value;
-        this.render();
-      });
-      input.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          item.name = input.value;
-          this.render();
-        }
-      });
-      cellName.innerHTML = "";
-      cellName.appendChild(input);
-      input.focus();
-    });
-    cellName.appendChild(nameSpan);
-    row.appendChild(cellName);
+    
 
     const cellTotal = document.createElement("td");
     if (isRootGroup && typeof item.total === "number") {
@@ -354,7 +388,7 @@ class BudgetTable {
 
     // Вторая строка заголовка
     const headerRow2 = document.createElement("tr");
-    headerRow2.classList.add("header-row2");
+    headerRow2.classList.add("accent-color");
     const headerRow2Titles = [
       "БЮДЖЕТ",
       "План",
@@ -385,25 +419,7 @@ class BudgetTable {
       this.renderRow(group, group.type);
     });
 
-    // // Добавляем строку "Сальдо"
-    // const saldoRow = document.createElement("tr");
-    // const saldoCell = document.createElement("td");
-    // saldoCell.textContent = "Сальдо";
-    // saldoRow.appendChild(saldoCell);
-
-    // // Вычисляем сальдо по всем столбцам
-    // for (let i = 2; i < headerRow1Titles.length; i++) {
-    //   let incomeValue =
-    //     parseFloat(this.data.income.values[headerRow1Titles[i]]) || 0;
-    //   let expensesValue =
-    //     parseFloat(this.data.expenses.values[headerRow1Titles[i]]) || 0;
-    //   let saldo = incomeValue - expensesValue;
-    //   const saldoValueCell = document.createElement("td");
-    //   saldoValueCell.textContent = `${saldo.toFixed(2)} руб`;
-    //   saldoRow.appendChild(saldoValueCell);
-    // }
-
-    // tbody.appendChild(saldoRow);
+    
 
     this.table.appendChild(tbody);
   }
