@@ -216,14 +216,13 @@ class BudgetTable {
     return monthlySums;
   }
 
-
   calculateSaldo() {
     const saldo = {
       name: "Сальдо",
       values: {},
-      total: this.data.income.total - this.data.expenses.total
+      total: this.data.income.total - this.data.expenses.total,
     };
-  
+
     const months = [
       "January",
       "February",
@@ -236,18 +235,17 @@ class BudgetTable {
       "September",
       "October",
       "November",
-      "December"
+      "December",
     ];
-  
+
     months.forEach((month) => {
       const incomeValue = this.data.income.values[month] || 0;
       const expensesValue = this.data.expenses.values[month] || 0;
       saldo.values[month] = incomeValue - expensesValue;
     });
-  
+
     return saldo;
   }
-  
 
   renderRow(item, groupKey, parentGroup = null) {
     const row = document.createElement("tr");
@@ -309,8 +307,6 @@ class BudgetTable {
       );
       cellName.appendChild(addGroupButton);
     }
-
-    
 
     const cellTotal = document.createElement("td");
     if (isRootGroup && typeof item.total === "number") {
@@ -397,7 +393,7 @@ class BudgetTable {
 
     headerRow2Titles.forEach((header, index) => {
       const th = document.createElement("th");
-      if (index === 0) {  
+      if (index === 0) {
         th.innerHTML = `${header} <button>⇅</button>`; // Кнопка сортировки
         th.classList.add("budget-header");
         th.addEventListener("click", () => this.handleSort("name"));
@@ -419,12 +415,27 @@ class BudgetTable {
       this.renderRow(group, group.type);
     });
 
-    
+    // Добавляем строку "Сальдо"
+    const saldoRow = document.createElement("tr");
+    const saldoCell = document.createElement("td");
+    saldoCell.textContent = "Сальдо";
+    saldoRow.appendChild(saldoCell);
+
+    // Вычисляем сальдо по всем столбцам
+    for (let i = 2; i < headerRow1Titles.length; i++) {
+      const month = headerRow1Titles[i];
+      const incomeValue = this.data.income.values[month] || 0;
+      const expensesValue = this.data.expenses.values[month] || 0;
+      const saldoValue = incomeValue - expensesValue;
+      const saldoValueCell = document.createElement("td");
+      saldoValueCell.textContent = `${saldoValue.toFixed(2)} руб`;
+      saldoRow.appendChild(saldoValueCell);
+    }
+
+    tbody.appendChild(saldoRow);
 
     this.table.appendChild(tbody);
   }
-
-  
 
   getElement() {
     return this.table;
