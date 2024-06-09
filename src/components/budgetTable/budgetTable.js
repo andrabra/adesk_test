@@ -1,5 +1,6 @@
 import EditableCell from "../editableCell/editableCell";
 import "./budgetTable.css";
+import { months } from "../../services/budgetService";
 
 class BudgetTable {
   constructor(data) {
@@ -179,20 +180,7 @@ class BudgetTable {
     const monthlySums = {};
 
     // Инициализация всех месяцев с нулевыми значениями
-    [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ].forEach((month) => {
+    months.forEach((month) => {
       monthlySums[month] = 0;
     });
 
@@ -222,21 +210,6 @@ class BudgetTable {
       values: {},
       total: this.data.income.total - this.data.expenses.total,
     };
-
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
 
     months.forEach((month) => {
       const incomeValue = this.data.income.values[month] || 0;
